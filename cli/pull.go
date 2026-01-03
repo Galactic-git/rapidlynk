@@ -9,10 +9,16 @@ func handlePull(id string) {
 	file := "rapidlynk_download.tar.gz"
 
 	fmt.Println("⬇️ Downloading...")
-	downloadFile(id, file)
+	if err := downloadFile(id, file); err != nil {
+		fmt.Println("Download failed:", err)
+		return
+	}
 
 	fmt.Println("📂 Extracting...")
-	exec.Command("tar", "-xzf", file).Run()
+	if err := exec.Command("tar", "-xzf", file).Run(); err != nil {
+		fmt.Println("Extraction failed:", err)
+		return
+	}
 
 	fmt.Println("✅ Project ready")
 }

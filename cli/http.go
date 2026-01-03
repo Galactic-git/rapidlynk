@@ -7,20 +7,34 @@ import (
 	"os"
 )
 
-const serverURL = "http://localhost:8080"
+// const serverBaseURL = "http://3.108.54.202:8080"
+
+const serverBaseURL = "http://localhost:8080"
 
 func uploadFile(path string) (string, error) {
-	file, _ := os.Open(path)
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
 	defer file.Close()
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
-	part, _ := writer.CreateFormFile("file", path)
-	file.WriteTo(part)
-	writer.Close()
+	part, err := writer.CreateFormFile("file", path)
+	if err != nil {
+		return "", err
+	}
 
-	req, _ := http.NewRequest("POST", serverURL+"/upload", body)
+	if _, err := file.WriteTo(part); err != nil {
+		return "", err
+	}
+
+	if err := writer.Close(); err != nil {
+		return "", err
+	}
+
+	req, _ := http.NewRequest("POST", serverBaseURL+"/upload", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
 	resp, err := http.DefaultClient.Do(req)
@@ -36,7 +50,7 @@ func uploadFile(path string) (string, error) {
 }
 
 func downloadFile(id string, output string) error {
-	resp, err := http.Get(serverURL + "/download/" + id)
+	resp, err := http.Get(serverBaseURL + "/download/" + id)
 	if err != nil {
 		return err
 	}

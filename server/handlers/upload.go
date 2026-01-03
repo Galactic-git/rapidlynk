@@ -32,7 +32,24 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer out.Close()
 
-	io.Copy(out, file)
+	// Copy the file content and check for errors
+	bytesWritten, err := io.Copy(out, file)
+	if err != nil {
+		http.Error(w, "Failed to write file", http.StatusInternalServerError)
+		return
+	}
+
+	// Ensure all data is written to disk before responding
+	if err := out.Sync(); err != nil {
+		http.Error(w, "Failed to sync file", http.StatusInternalServerError)
+		return
+	}
+
+	// Log the upload for debugging
+	if bytesWritten == 0 {
+		http.Error(w, "No data received", http.StatusBadRequest)
+		return
+	}
 
 	w.Write([]byte(id))
 }
