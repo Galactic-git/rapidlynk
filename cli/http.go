@@ -7,9 +7,9 @@ import (
 	"os"
 )
 
-const serverBaseURL = "http://13.233.158.201:8080"
+// const serverBaseURL = "http://13.233.158.201:8080"
 
-// const serverBaseURL = "http://localhost:8080"
+const serverBaseURL = "http://localhost:8080"
 
 func uploadFile(path string) (string, error) {
 	file, err := os.Open(path)
