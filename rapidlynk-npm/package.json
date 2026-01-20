@@ -1,8 +1,12 @@
 {
   "name": "rapidlynk",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Private, one-command project sharing",
   "license": "MIT",
   "bin": {
-    "rapidlynk": "bin/rapidlynk.exe"
+    "rapidlynk": "rapidlynk"
+  },
+  "scripts": {
+    "postinstall": "node install.js"
   }
 }
