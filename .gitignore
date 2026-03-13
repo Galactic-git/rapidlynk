@@ -7,3 +7,8 @@
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
+
+# Build artifacts and logs
+server/server_bin
+server/rapidlynk.log
+server/storage/*.tar.gz
