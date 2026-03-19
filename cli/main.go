@@ -26,9 +26,6 @@ func main() {
 		}
 		handlePull(os.Args[2])
 
-	case "--version", "-v":
-		fmt.Println("rapidlynk v" + version)
-
 	case "--help", "-h":
 		printUsage()
 
