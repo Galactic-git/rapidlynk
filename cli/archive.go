@@ -24,11 +24,13 @@ func createArchive(output string) error {
 	root, _ := os.Getwd()
 
 	skipNames := map[string]struct{}{
-		".git":                     {},
+		".git":                      {},
 		output:                      {}, // the archive we are creating
-		"rapidlynk_bundle.tar.gz":  {},
+		"rapidlynk_bundle.tar.gz":   {},
 		"rapidlynk_download.tar.gz": {},
-		"rapidlynk.exe":            {},
+		"rapidlynk_bundle.enc":      {},
+		"rapidlynk_download.enc":    {},
+		"rapidlynk.exe":             {},
 	}
 
 	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {

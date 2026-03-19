@@ -55,3 +55,8 @@ yarn-error.log*
 # Misc
 # =========================
 .env
+
+# Allow Rapidlynk NPM binaries
+!rapidlynk-npm/bin/
+!rapidlynk-npm/bin/*
+!rapidlynk-npm/*.tgz

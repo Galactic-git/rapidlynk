@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-const version = "0.2.0"
+const version = "0.4.0"
 
 func main() {
 	if len(os.Args) < 2 {
@@ -14,13 +14,14 @@ func main() {
 	}
 
 	switch os.Args[1] {
+	case "-v", "--version", "version":
+		fmt.Printf("rapidlynk version %s\n", version)
 	case "push":
 		handlePush()
 
 	case "pull":
 		if len(os.Args) < 3 {
-			fmt.Println("❌ Missing id")
-			fmt.Println("Usage: rapidlynk pull <id>")
+			fmt.Println("Usage: rapidlynk pull <secret>")
 			return
 		}
 		handlePull(os.Args[2])

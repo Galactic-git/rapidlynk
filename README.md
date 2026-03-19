@@ -1,164 +1,67 @@
+# Rapidlynk
 
+Rapidlynk is a Go-based project bundling and sharing tool. It consists of a Command Line Interface (CLI) and a backend server, allowing users to easily bundle their project files, upload them to a server, and share them via a unique ID. Other users can then use the CLI to pull and extract the project bundle using that ID.
 
----
+## Architecture
 
-# RapidLynk 
+The project is split into two main components:
 
-**RapidLynk** is a minimal, terminal-first tool to **privately share entire project folders** with a single command — no Git, no cloud accounts, no UI.
+- **Server**: A Go HTTP server that handles file uploads and downloads.
+- **CLI**: A command-line tool to push (upload) and pull (download) project bundles.
 
-Push a project.
-Get a code.
-Pull it anywhere.
+### Directory Structure
 
----
+```text
+rapidlynk/
+├── cli/              # Command Line Interface source code
+│   ├── archive.go    # Logic for archiving (tar.gz) project files
+│   ├── http.go       # HTTP client logic to interact with the server
+│   ├── main.go       # CLI entrypoint and command routing
+│   ├── pull.go       # Implementation of the 'pull' command
+│   └── push.go       # Implementation of the 'push' command
+├── server/           # Backend server source code
+│   ├── config/       # Server configuration
+│   ├── handlers/     # HTTP handlers (upload, download)
+│   ├── storage/      # File storage management
+│   ├── utils/        # Utility functions
+│   ├── main.go       # Server entrypoint (runs on port 8080)
+│   └── routes.go     # HTTP route definitions
+├── go.mod            # Go module definition (module named go_cli)
+└── README.md         # This documentation file
+```
 
-##  What RapidLynk Does
+## Setup & Usage
 
-*  Bundles your project into a single archive
-*  Uploads it to a server
-*  Returns a private, unguessable ID
-* Lets others download and extract the project using that ID
-*  Private by default
-*  Designed for developers, not filesharing UIs
+### Prerequisites
+- [Go](https://golang.org/doc/install) (version 1.22 or higher)
 
----
+### Running the Server
 
-##  Why RapidLynk?
-
-Sometimes you just want to:
-
-* Share a project quickly
-* Send code to a teammate
-* Move a project between machines
-* Avoid Git history, remotes, and permissions
-
-RapidLynk focuses on **speed, simplicity, and privacy**.
-
----
-
-##  Installation
-
-### Using npm (Recommended)
+To start the backend server, navigate to the `server` directory and run the main file:
 
 ```bash
-npm install -g rapidlynk
+cd server
+go run main.go routes.go
 ```
+The server will start running on `http://localhost:8080` with endpoints `/upload` and `/download/`.
 
-Verify:
+### Using the CLI
 
-```bash
-rapidlynk --help
-```
+You can run the CLI directly using `go run` or compile it into an executable.
 
-> Node.js is required **only for installation**.
-> RapidLynk runs as a native Go binary at runtime.
+**Commands:**
 
----
+*   **Push**: Bundles the current project directory into a `tar.gz` archive, uploads it to the server, and provides a unique ID.
+    ```bash
+    go run ./cli push
+    ```
 
-##  Usage
+*   **Pull**: Downloads the project bundle associated with a specific ID and extracts it into the current directory.
+    ```bash
+    go run ./cli pull <id>
+    ```
 
-### Push a project
+## Development
 
-From inside any project directory:
-
-```bash
-rapidlynk push
-```
-
-Output:
-
-```
-✅ Share this id:
-abcd1234efgh5678
-```
-
----
-
-### Pull a project
-
-From any directory:
-
-```bash
-rapidlynk pull abcd1234efgh5678
-```
-
-This downloads and extracts the project into the current directory.
-
----
-
-## 📁 What Gets Included
-
-* All files in the current directory
-* Folder structure preserved
-* File permissions preserved
-
-### Automatically excluded
-
-* `.git/`
-
-> More ignore rules coming soon.
-
----
-
-## 🔐 Security Model (MVP)
-
-* Files are **private by default**
-* Access is controlled via long, random IDs
-* No authentication required (for now)
-* HTTPS assumed (TLS handled externally)
-
-> Client-side encryption: **Coming Soon**
-
----
-
-##  Architecture Overview
-
-* **CLI**: Go (single static binary)
-* **Server**: Go (simple HTTP server)
-* **Archive format**: `.tar.gz` (streaming-friendly)
-
-> Server setup documentation: **Coming Soon**
-
----
-
-##  Platform Support
-
-* ✅ Windows (stable)
-* 🕒 macOS (Coming Soon)
-* 🕒 Linux (Coming Soon)
-
----
-
-## 📜 License
-
-MIT License
-See `LICENSE` for details.
-
----
-
-##  Roadmap (High Level)
-
-* `.rapidlynkignore` support
-* Client-side encryption
-* macOS & Linux binaries
-* Self-hosted server guide
-* PowerShell / shell installers
-* CI-based releases
-
----
-
-##  Contributing
-
-RapidLynk is open source and contributions are welcome.
-
-Contribution guide: **Coming Soon**
-
----
-
-## 💬 Feedback
-
-If RapidLynk saves you time or you have ideas to improve it — feedback is always welcome.
-
----
-
-
+- The module name in `go.mod` is currently `go_cli`.
+- The CLI uses standard `tar` commands for extraction, so a Unix-like environment or an environment with `tar` installed is required for the `pull` command to function correctly.

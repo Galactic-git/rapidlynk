@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+// This is a placeholder file to satisfy npm's "bin" field.
+// The actual binary is copied to this location by the postinstall script (install.js).

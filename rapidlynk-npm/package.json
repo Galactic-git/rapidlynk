@@ -1,6 +1,10 @@
 {
   "name": "rapidlynk",
+<<<<<<< HEAD
   "version": "0.2.0",
+=======
+  "version": "0.4.2",
+>>>>>>> neo
   "description": "Private, one-command project sharing",
   "license": "MIT",
   "bin": {
