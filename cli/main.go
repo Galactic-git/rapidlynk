@@ -16,7 +16,7 @@ func main() {
 		handlePush()
 	case "pull":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: rapidlynk pull <id>")
+			fmt.Println("Usage: rapidlynk pull <secret>")
 			return
 		}
 		handlePull(os.Args[2])
