@@ -8,7 +8,55 @@
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
 
-# Build artifacts and logs
-server/server_bin
-server/rapidlynk.log
-server/storage/*.tar.gz
+
+
+# =========================
+# Go build artifacts
+# =========================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# =========================
+# Build / distribution folders
+# =========================
+/bin/
+/dist/
+
+# =========================
+# Temporary & cache files
+# =========================
+*.log
+*.tmp
+
+# =========================
+# OS-specific files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Node / npm (if any)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Editor / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Misc
+# =========================
+.env
+
+# Allow Rapidlynk NPM binaries
+!rapidlynk-npm/bin/
+!rapidlynk-npm/bin/*
+!rapidlynk-npm/*.tgz
