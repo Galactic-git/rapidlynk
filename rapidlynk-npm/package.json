@@ -1,6 +1,6 @@
 {
   "name": "rapidlynk",
-  "version": "0.3.0",
+  "version": "0.4.2",
   "description": "Private, one-command project sharing",
   "license": "MIT",
   "bin": {
