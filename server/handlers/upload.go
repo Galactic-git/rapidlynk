@@ -45,6 +45,12 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Optional: channel mapping
+	channel := r.FormValue("channel")
+	if channel != "" {
+		_ = storage.SetChannel(channel, id)
+	}
+
 	// Log the upload for debugging
 	if bytesWritten == 0 {
 		http.Error(w, "No data received", http.StatusBadRequest)

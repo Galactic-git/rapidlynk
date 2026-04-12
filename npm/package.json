@@ -1,0 +1,15 @@
+{
+  "name": "rapidlynk",
+  "version": "0.5.50",
+  "description": "Rapidlynk CLI (bundled binaries)",
+  "license": "MIT",
+  "bin": {
+    "rapidlynk": "bin/rapidlynk.js"
+  },
+  "files": ["bin", "vendor", "README.md", "LICENSE"],
+  "os": ["win32", "linux", "darwin"],
+  "cpu": ["x64", "arm64"],
+  "scripts": {
+    "postinstall": "node bin/rapidlynk.js --postinstall"
+  }
+}

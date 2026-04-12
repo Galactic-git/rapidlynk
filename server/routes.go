@@ -12,5 +12,7 @@ func setupRoutes() http.Handler {
 	mux.HandleFunc("/upload", handlers.UploadHandler)
 	mux.HandleFunc("/download/", handlers.DownloadHandler)
 
+		mux.HandleFunc("/download/by-channel/", handlers.DownloadByChannelHandler)
+
 	return mux
 }
