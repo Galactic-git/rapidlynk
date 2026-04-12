@@ -65,3 +65,14 @@ You can run the CLI directly using `go run` or compile it into an executable.
 
 - The module name in `go.mod` is currently `go_cli`.
 - The CLI uses standard `tar` commands for extraction, so a Unix-like environment or an environment with `tar` installed is required for the `pull` command to function correctly.
+
+## Channel-based usage (new)
+
+- Push to a named channel:
+  ```bash
+  go run ./cli push -c <channel>
+  ```
+- Pull by channel (no key typed; provision key once via env or ~/.rapidlynk/keys.json):
+  ```bash
+  go run ./cli pull -c <channel>
+  ```
