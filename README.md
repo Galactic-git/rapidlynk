@@ -1,6 +1,8 @@
 # Rapidlynk
 
-Rapidlynk is a Go-based project bundling and sharing tool. It consists of a Command Line Interface (CLI) and a backend server, allowing users to easily bundle their project files, upload them to a server, and share them via a unique ID. Other users can then use the CLI to pull and extract the project bundle using that ID.
+![Rapidlynk](img/image.png)
+
+Rapidlynk is a Go-based project bundling and sharing tool. It consists of a Command Line Interface (CLI) and a backend server, allowing users to easily bundle their project files, upload them to a server, and share them via a unique ID. Other users can then use the CLI to pull and extract the project bundle using that ID.b
 
 ## Architecture
 
