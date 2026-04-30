@@ -58,9 +58,9 @@ You can run the CLI directly using `go run` or compile it into an executable.
     go run ./cli push
     ```
 
-*   **Pull**: Downloads the project bundle associated with a specific ID and extracts it into the current directory.
+*   **Pull**: Downloads the encrypted project bundle associated with a specific ID and extracts it into the current directory.
     ```bash
-    go run ./cli pull <id>
+    go run ./cli pull <id>:<key>
     ```
 
 ## Development
@@ -74,7 +74,30 @@ You can run the CLI directly using `go run` or compile it into an executable.
   ```bash
   go run ./cli push -c <channel>
   ```
-- Pull by channel (no key typed; provision key once via env or ~/.rapidlynk/keys.json):
+- Pull by channel (downloads the latest plain tarball for that channel and extracts it):
   ```bash
   go run ./cli pull -c <channel>
   ```
+
+## Windows installer
+
+- Windows distribution is packaged separately with Inno Setup under `installer/`.
+- The installer uses the prebuilt x64 CLI binary from `dist\rapidlynk-windows-amd64.exe`.
+- Installed location: `%LocalAppData%\Programs\Rapidlynk\rapidlynk.exe`
+- Install scope: current user only
+- The installer adds `%LocalAppData%\Programs\Rapidlynk\` to the user `PATH`, so `rapidlynk` can be run from any terminal.
+
+### Build the Windows installer
+
+1. Build the Windows x64 CLI binary:
+   ```powershell
+   $env:GOOS="windows"
+   $env:GOARCH="amd64"
+   go build -o dist\rapidlynk-windows-amd64.exe ./cli
+   ```
+2. Compile the Inno Setup installer:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts\build-installer.ps1
+   ```
+
+The helper script reads the CLI version from `cli/main.go`, uses `dist\rapidlynk-windows-amd64.exe` as the installer input, and emits a versioned installer under `installer\Output\`.
