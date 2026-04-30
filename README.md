@@ -81,23 +81,6 @@ You can run the CLI directly using `go run` or compile it into an executable.
 
 ## Windows installer
 
-- Windows distribution is packaged separately with Inno Setup under `installer/`.
-- The installer uses the prebuilt x64 CLI binary from `dist\rapidlynk-windows-amd64.exe`.
-- Installed location: `%LocalAppData%\Programs\Rapidlynk\rapidlynk.exe`
-- Install scope: current user only
-- The installer adds `%LocalAppData%\Programs\Rapidlynk\` to the user `PATH`, so `rapidlynk` can be run from any terminal.
-
-### Build the Windows installer
-
-1. Build the Windows x64 CLI binary:
-   ```powershell
-   $env:GOOS="windows"
-   $env:GOARCH="amd64"
-   go build -o dist\rapidlynk-windows-amd64.exe ./cli
-   ```
-2. Compile the Inno Setup installer:
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File scripts\build-installer.ps1
-   ```
-
-The helper script reads the CLI version from `cli/main.go`, uses `dist\rapidlynk-windows-amd64.exe` as the installer input, and emits a versioned installer under `installer\Output\`.
+- Windows distribution is packaged with Inno Setup from `installer/rapidlynk.iss`.
+- The installer places `rapidlynk.exe` in `%LocalAppData%\Programs\Rapidlynk\` and adds that folder to the current user `PATH`.
+- The generated installer is written to `installer\Output\`.
