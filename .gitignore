@@ -61,3 +61,6 @@ yarn-error.log*
 !rapidlynk-npm/bin/
 !rapidlynk-npm/bin/*
 !rapidlynk-npm/*.tgz
+
+# Local Netlify folder
+.netlify

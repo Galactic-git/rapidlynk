@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #07070b;
+  color: #f5f5f7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-abyss text-white antialiased;
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10;
+  }
+
+  .section-title {
+    @apply text-3xl font-semibold tracking-tight text-white sm:text-4xl;
+  }
+
+  .section-copy {
+    @apply max-w-3xl text-base leading-7 text-slate-300 sm:text-lg;
+  }
+
+  .card-surface {
+    @apply rounded-3xl border border-border bg-panel/85 backdrop-blur;
+  }
+
+  .pill-label {
+    @apply inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-purple-200;
+  }
+}
