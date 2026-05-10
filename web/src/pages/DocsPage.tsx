@@ -22,8 +22,8 @@ export function DocsPage() {
             <div className="card-surface p-8">
               <h3 className="text-xl font-semibold text-white">Basic commands</h3>
               <p className="mt-3 text-sm leading-6 text-slate-300">
-                Use `rapidlynk push` to send content and `rapidlynk pull` to restore it. For repeat collaboration, use
-                channel flags to publish and retrieve from a reusable channel.
+                Use `rapidlynk push` to generate a one-time secret and `rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g=` to restore it. For
+                repeat collaboration, use channel flags to publish and retrieve from a reusable channel.
               </p>
             </div>
             <TerminalDemo

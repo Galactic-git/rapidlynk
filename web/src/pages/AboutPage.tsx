@@ -88,7 +88,7 @@ export function AboutPage() {
             />
             <TerminalDemo
               label="secret pull"
-              command="rapidlynk pull <secret>"
+              command="rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g="
               lines={[
                 { text: '🔑 Validating secret...', tone: 'muted' },
                 { text: '📥 Downloading...', tone: 'muted' },

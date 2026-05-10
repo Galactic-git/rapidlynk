@@ -13,7 +13,9 @@ export function DownloadPage() {
           <div className="card-surface p-8">
             <h2 className="text-2xl font-semibold text-white">RapidLynk for Windows (x64)</h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-              Download the installer, run setup, then open a terminal and start using `rapidlynk push` and `rapidlynk pull`.
+              Download the installer, run setup, then open a terminal and start using `rapidlynk push`,
+              `rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g=`, or
+              `rapidlynk pull -c &lt;channel&gt;`.
             </p>
             <div className="mt-8">
               <a

@@ -27,7 +27,7 @@ export const docsCards = [
   },
   {
     title: 'Basic commands',
-    description: '`rapidlynk push` sends content out quickly. `rapidlynk pull` retrieves it on the target system.'
+    description: '`rapidlynk push` returns a one-time secret, and `rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g=` restores it on the target system.'
   }
 ];
 

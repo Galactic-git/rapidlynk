@@ -95,7 +95,7 @@ export function LearnPage() {
               />
               <TerminalDemo
                 label="restore on another machine"
-                command="rapidlynk pull <secret>"
+                command="rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g="
                 lines={[
                   { text: '📥 Downloading...', tone: 'muted' },
                   { text: '🔓 Decrypting...', tone: 'muted' },

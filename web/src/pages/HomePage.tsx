@@ -4,7 +4,7 @@ import { TerminalDemo } from '../components/TerminalDemo';
 
 const quickLinks = [
   { label: 'Windows x64 installer', value: 'Ready from the current download page' },
-  { label: 'Primary commands', value: 'rapidlynk push · rapidlynk pull' },
+  { label: 'Primary commands', value: 'rapidlynk push · rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g=' },
   { label: 'Core concept', value: 'One-time secrets and reusable channels' }
 ];
 
@@ -83,7 +83,7 @@ export function HomePage() {
             />
             <TerminalDemo
               label="rapidlynk pull"
-              command="rapidlynk pull"
+              command="rapidlynk pull 98c3095f67f5072152c4f141e1900f17:qyj-sRJa3tgZj-QqUmrOBCpANKe3N4hbXzLXSCKSH4g="
               lines={[
                 { text: '🔑 Validating secret...', tone: 'muted' },
                 { text: '📥 Downloading...', tone: 'muted' },
