@@ -1,4 +1,5 @@
 ﻿import { ReactNode, useMemo, useState } from 'react';
+import { ComparisonTable } from '../components/ComparisonTable';
 import { PageHero } from '../components/PageHero';
 import { TerminalDemo } from '../components/TerminalDemo';
 
@@ -260,23 +261,15 @@ export function LearnPage() {
         title: '🧠 When to Use What',
         content: (
           <div className="space-y-6">
-            <div className="overflow-hidden rounded-2xl border border-white/10">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-white/[0.04] text-slate-300">
-                  <tr>
-                    <th className="px-4 py-3 font-medium">Feature</th>
-                    <th className="px-4 py-3 font-medium">One-time (`push`)</th>
-                    <th className="px-4 py-3 font-medium">Channel (`-c`)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-t border-white/10"><td className="px-4 py-3 text-white">Encryption</td><td className="px-4 py-3">AES-GCM</td><td className="px-4 py-3">No</td></tr>
-                  <tr className="border-t border-white/10"><td className="px-4 py-3 text-white">Security</td><td className="px-4 py-3">High</td><td className="px-4 py-3">Medium</td></tr>
-                  <tr className="border-t border-white/10"><td className="px-4 py-3 text-white">Speed</td><td className="px-4 py-3">Medium</td><td className="px-4 py-3">Fast</td></tr>
-                  <tr className="border-t border-white/10"><td className="px-4 py-3 text-white">Reusability</td><td className="px-4 py-3">No</td><td className="px-4 py-3">Yes</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <ComparisonTable
+              columns={['Feature', 'One-time (`push`)', 'Channel (`-c`)']}
+              rows={[
+                { feature: 'Encryption', values: ['AES-GCM', 'No'] },
+                { feature: 'Security', values: ['High', 'Medium'] },
+                { feature: 'Speed', values: ['Medium', 'Fast'] },
+                { feature: 'Reusability', values: ['No', 'Yes'] }
+              ]}
+            />
             <div className="space-y-4">
               <p><span className="text-white">Use `rapidlynk push`</span> when data is sensitive, sharing is one-time, and security matters.</p>
               <p><span className="text-white">Use `rapidlynk push -c`</span> when working with a team, sharing repeatedly, and speed matters more.</p>

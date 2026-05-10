@@ -1,3 +1,4 @@
+import { ComparisonTable } from '../components/ComparisonTable';
 import { PageHero } from '../components/PageHero';
 import { TerminalDemo } from '../components/TerminalDemo';
 
@@ -133,25 +134,11 @@ export function AboutPage() {
               reusability, and collaboration over one-time secure transfer semantics.
             </p>
 
-            <div className="mt-8 overflow-hidden rounded-2xl border border-white/10">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-white/[0.04] text-slate-300">
-                  <tr>
-                    <th className="px-4 py-3 font-medium">Feature</th>
-                    <th className="px-4 py-3 font-medium">One-time secret</th>
-                    <th className="px-4 py-3 font-medium">Channel</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tradeoffs.map((row) => (
-                    <tr key={row.feature} className="border-t border-white/10 text-slate-300">
-                      <td className="px-4 py-3 text-white">{row.feature}</td>
-                      <td className="px-4 py-3">{row.secret}</td>
-                      <td className="px-4 py-3">{row.channel}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="mt-8">
+              <ComparisonTable
+                columns={['Feature', 'One-time secret', 'Channel']}
+                rows={tradeoffs.map((r) => ({ feature: r.feature, values: [r.secret, r.channel] }))}
+              />
             </div>
           </div>
         </div>
