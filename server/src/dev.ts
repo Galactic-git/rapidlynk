@@ -1,4 +1,4 @@
-import app from "./index.js"
+import app from "./app.js"
 import {serve} from "@hono/node-server"
 
 const port = 3000

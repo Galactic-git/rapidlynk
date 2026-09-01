@@ -3,9 +3,6 @@ import { Hono } from "hono";
 import { generateDownloadUrl, generateUploadUrl, setTest , getFileSize } from "./services/s3.js";
 import { ConnectionDBTest, recordDownload, recordUpload } from "./services/dynamodb.js"
 
-
-
-
 const app = new Hono;
 
 app.get("/health", (c) => {
@@ -123,25 +120,5 @@ app.post("/api/upload-url", async (c) => {
         })
     }
 })
-
-
-app.get("/dynamodb/health", async (c) => {
-    const response = await ConnectionDBTest()
-    return c.json(response, response.connection ? 200 : 500);
-})
-
-app.get("/test/download-metric", async (c) => {
-    await recordDownload(50 * 1024 * 1024);
-
-    return c.json({
-        message: "download metric recorded",
-    });
-});
-app.get("/test/upload-metric", async (c) => {
-    await recordUpload(50 * 1024 * 1024);
-    return c.json({
-        message: "upload metric recorded",
-    });
-});
 
 export default app

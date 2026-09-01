@@ -1,7 +1,8 @@
-import {GetObjectCommand, PutObjectCommand, S3Client , HeadBucketCommand} from "@aws-sdk/client-s3";
+import {GetObjectCommand, PutObjectCommand, S3Client , HeadBucketCommand  , HeadObjectCommand} from "@aws-sdk/client-s3";
 import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 import { randomBytes} from "node:crypto";
 import {createPresignedPost} from "@aws-sdk/s3-presigned-post";
+
 
 
 const REGION = process.env.AWS_REGION || "ap-south-1";
@@ -45,6 +46,8 @@ export async function generateDownloadUrl(filId: string): Promise<string> {
      const getUrl = await getSignedUrl(s3Client , getCommand  , {
         expiresIn : 900
      })
+  
+
      console.log( " get Url is " , getUrl )
     return getUrl;
 }
@@ -68,3 +71,20 @@ export async function setTest(){
 
    
 }
+
+
+export async function getFileSize(fileId: string): Promise<number> {
+  const response = await s3Client.send(
+    new HeadObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: `bundles/${fileId}`,
+    })
+  );
+
+  if (response.ContentLength === undefined) {
+    throw new Error("Could not determine file size");
+  }
+
+  return response.ContentLength;
+}
+
