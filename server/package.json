@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx src/dev.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "build:lambda": "esbuild src/lambda.ts --bundle --platform=node --target=node24 --outfile=dist/lambda.js"
   },
   "keywords": [],
   "type": "module",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.4.0",
+    "esbuild": "^0.28.2",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }
