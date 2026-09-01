@@ -1,86 +1,162 @@
 package main
 
 import (
-	"bytes"
-	"mime/multipart"
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"strings"
+	"time"
 )
 
-const defaultServerBaseURL = "http://35.154.94.11:8080"
+const defaultServerBaseURL = "http://localhost:8080"
+
+var httpClient = &http.Client{
+	Timeout: 5 * time.Minute,
+}
 
 func serverBaseURL() string {
 	if v := os.Getenv("RAPIDLYNK_SERVER"); v != "" {
-		return v
+		return strings.TrimRight(v, "/")
 	}
 	return defaultServerBaseURL
 }
 
-func uploadFile(path string, channelOpt ...string) (string, error) {
-	file, err := os.Open(path)
+type UploadURLResponse struct {
+	FileID    string `json:"file_id"`
+	UploadURL string `json:"upload_url"`
+	Method    string `json:"method"`
+	ExpiresIn int64  `json:"expires_in"`
+}
+
+type DownloadURLResponse struct {
+	FileID      string `json:"file_id"`
+	DownloadURL string `json:"download_url"`
+	Method      string `json:"method"`
+	ExpiresIn   int64  `json:"expires_in"`
+}
+
+func requestUploadURL() (*UploadURLResponse, error) {
+	url := serverBaseURL() + "/api/upload-url"
+	req, err := http.NewRequest(http.MethodPost, url, nil)
 	if err != nil {
-		return "", err
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to server (%s): %w", url, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("server error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	var res UploadURLResponse
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("invalid server response: %w", err)
+	}
+
+	if res.UploadURL == "" || res.FileID == "" {
+		return nil, fmt.Errorf("server returned empty upload URL or file ID")
+	}
+
+	return &res, nil
+}
+
+func uploadToSignedURL(signedURL string, filePath string) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to open file for upload: %w", err)
 	}
 	defer file.Close()
 
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	part, err := writer.CreateFormFile("file", path)
+	fileInfo, err := file.Stat()
 	if err != nil {
-		return "", err
+		return fmt.Errorf("failed to stat file: %w", err)
 	}
 
-	if _, err := file.WriteTo(part); err != nil {
-		return "", err
-	}
-	if len(channelOpt) > 0 && channelOpt[0] != "" {
-		_ = writer.WriteField("channel", channelOpt[0])
-	}
-
-	if err := writer.Close(); err != nil {
-		return "", err
-	}
-
-	req, _ := http.NewRequest("POST", serverBaseURL()+"/upload", body)
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-
-	resp, err := http.DefaultClient.Do(req)
+	req, err := http.NewRequest(http.MethodPut, signedURL, file)
 	if err != nil {
-		return "", err
+		return fmt.Errorf("failed to create upload request: %w", err)
+	}
+
+	req.ContentLength = fileInfo.Size()
+	req.Header.Set("Content-Type", "application/octet-stream")
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to upload to Google Cloud Storage: %w", err)
 	}
 	defer resp.Body.Close()
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("GCS upload failed (status %d): %s", resp.StatusCode, string(body))
+	}
 
-	return buf.String(), nil
+	return nil
 }
 
-func downloadFile(id string, output string) error {
-	resp, err := http.Get(serverBaseURL() + "/download/" + id)
+func requestDownloadURL(fileID string) (string, error) {
+	url := fmt.Sprintf("%s/api/download-url/%s", serverBaseURL(), fileID)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		return err
+		return "", fmt.Errorf("failed to create download request: %w", err)
+	}
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("failed to connect to server: %w", err)
 	}
 	defer resp.Body.Close()
 
-	out, _ := os.Create(output)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("server error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	var res DownloadURLResponse
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return "", fmt.Errorf("invalid server response: %w", err)
+	}
+
+	if res.DownloadURL == "" {
+		return "", fmt.Errorf("server returned empty download URL")
+	}
+
+	return res.DownloadURL, nil
+}
+
+func downloadFromSignedURL(signedURL string, outputPath string) error {
+	req, err := http.NewRequest(http.MethodGet, signedURL, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %w", err)
+	}
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to download from Google Cloud Storage: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("GCS download failed (status %d): %s", resp.StatusCode, string(body))
+	}
+
+	out, err := os.Create(outputPath)
+	if err != nil {
+		return fmt.Errorf("failed to create output file: %w", err)
+	}
 	defer out.Close()
 
-	_, err = out.ReadFrom(resp.Body)
-	return err
-}
-
-func downloadFileByChannel(channel, output string) error {
-	resp, err := http.Get(serverBaseURL() + "/download/by-channel/" + channel)
-	if err != nil {
-		return err
+	if _, err := io.Copy(out, resp.Body); err != nil {
+		return fmt.Errorf("failed to write downloaded content: %w", err)
 	}
-	defer resp.Body.Close()
-	out, _ := os.Create(output)
-	defer out.Close()
-	_, err = out.ReadFrom(resp.Body)
-	return err
+
+	return nil
 }
-
-
