@@ -1,0 +1,14 @@
+.git
+.github
+.agents
+bin
+dist
+web
+npm
+rapidlynk-npm
+installer
+scripts
+*.tar.gz
+*.enc
+*.exe
+*.json

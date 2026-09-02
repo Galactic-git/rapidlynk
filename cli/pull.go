@@ -1,65 +1,54 @@
-﻿package main
+package main
 
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 )
 
 func handlePull(secret string) {
 	parts := strings.SplitN(secret, ":", 2)
-	if len(parts) != 2 {
-		fmt.Println("Invalid secret format. Expected <id>:<key>")
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		fmt.Println("❌ Invalid secret format. Expected <file_id>:<key>")
 		return
 	}
-	id := parts[0]
+	fileID := parts[0]
 	key := parts[1]
 
 	encryptedFile := "rapidlynk_download.enc"
 	archiveFile := "rapidlynk_download.tar.gz"
 
-	fmt.Println("⬇️ Downloading...")
-	if err := downloadFile(id, encryptedFile); err != nil {
-		fmt.Println("Download failed:", err)
+	// 1. Request download URL from Cloud Run
+	fmt.Println("🔎Verifying the secret...")
+	downloadURL, err := requestDownloadURL(fileID)
+	if err != nil {
+		fmt.Printf("❌ Failed to get download URL: %v\n", err)
 		return
 	}
 
-	fmt.Println("🔐 Decrypting...")
+	// 2. Download from Google Cloud Storage
+	fmt.Println("⬇️ getting your project...")
+	if err := downloadFromSignedURL(downloadURL, encryptedFile); err != nil {
+		fmt.Printf("❌ Download failed: %v\n", err)
+		return
+	}
+	defer os.Remove(encryptedFile)
+
+	// 3. Decrypt with AES-256-GCM
+	fmt.Println("🔐 Decrypting with AES-256-GCM...")
 	if err := decryptFile(encryptedFile, archiveFile, key); err != nil {
-		fmt.Println("Decryption failed:", err)
-		_ = os.Remove(encryptedFile)
+		fmt.Printf("❌ Decryption failed: %v\n", err)
+		return
+	}
+	defer os.Remove(archiveFile)
+
+	// 4. Extract archive
+	fmt.Println("📦 Extracting files...")
+	destDir, _ := os.Getwd()
+	if err := extractArchive(archiveFile, destDir); err != nil {
+		fmt.Printf("❌ Extraction failed: %v\n", err)
 		return
 	}
 
-	fmt.Println("📦 Extracting...")
-	if err := exec.Command("tar", "-xzf", archiveFile).Run(); err != nil {
-		fmt.Println("Extraction failed:", err)
-		_ = os.Remove(encryptedFile)
-		_ = os.Remove(archiveFile)
-		return
-	}
-	_ = os.Remove(encryptedFile)
-	_ = os.Remove(archiveFile)
-	fmt.Println("✅ Project ready")
-}
-
-func handlePullByChannel(channel string) {
-	archiveFile := "rapidlynk_download.tar.gz"
-
-	fmt.Printf("🔎 Resolving channel '%s'...\n", channel)
-	// Channel-based flow: download plain tar.gz, no decryption
-	if err := downloadFileByChannel(channel, archiveFile); err != nil {
-		fmt.Println("Download failed:", err)
-		return
-	}
-
-	fmt.Println("📦 Extracting...")
-	if err := exec.Command("tar", "-xzf", archiveFile).Run(); err != nil {
-		fmt.Println("Extraction failed:", err)
-		_ = os.Remove(archiveFile)
-		return
-	}
-	_ = os.Remove(archiveFile)
-	fmt.Println("✅ Project ready")
+	fmt.Println("✅ Project extracted successfully!")
 }

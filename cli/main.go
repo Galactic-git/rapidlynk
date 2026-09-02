@@ -1,57 +1,47 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 )
 
-const version = "0.5.50"
+const version = "1.1.0"
 
-func main() {
-	if len(os.Args) < 2 {
+func main() { //  0        ,   1
+	if len(os.Args) < 2 { // rapidlynk push -> ["rapidlynk", "push"]
 		printUsage()
 		return
 	}
 
 	switch os.Args[1] {
-	case "-v", "--version", "version":
+	case "-v", "--version":
 		fmt.Printf("rapidlynk version %s\n", version)
+
 	case "push":
-		pushCmd := flag.NewFlagSet("push", flag.ExitOnError)
-		channel := pushCmd.String("c", "", "channel name")
-		_ = pushCmd.Parse(os.Args[2:])
-		handlePush(*channel)
+		handlePush()
 
 	case "pull":
-		pullCmd := flag.NewFlagSet("pull", flag.ExitOnError)
-		channel := pullCmd.String("c", "", "channel name")
-		_ = pullCmd.Parse(os.Args[2:])
-		args := pullCmd.Args()
-		if *channel != "" {
-			handlePullByChannel(*channel)
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: rapidlynk pull <file_id>:<key>")
 			return
 		}
-		if len(args) < 1 {
-			fmt.Println("Usage: rapidlynk pull <id:key> or rapidlynk pull -c <channel>")
-			return
-		}
-		handlePull(args[0])
+		handlePull(os.Args[2])
 
 	case "--help", "-h":
 		printUsage()
 
 	default:
-		fmt.Println("? Unknown command:", os.Args[1])
+		fmt.Printf("❓ Unknown command: %s\n\n", os.Args[1])
 		printUsage()
 	}
 }
 
 func printUsage() {
+	fmt.Println("RapidLynk - Instant Encrypted Project Sharing via Google Cloud")
+	fmt.Println()
 	fmt.Println("Usage:")
-	fmt.Println("  rapidlynk push [-c <channel>]")
-	fmt.Println("  rapidlynk pull <id:key>")
-	fmt.Println("  rapidlynk pull -c <channel>")
-	fmt.Println("  rapidlynk --version")
+	fmt.Println("  rapidlynk push              Bundle, encrypt with AES-256-GCM, and upload to GCS")
+	fmt.Println("  rapidlynk pull <id>:<key>   Download from GCS, decrypt, and extract bundle")
+	fmt.Println("  rapidlynk --version         Show version information")
+	fmt.Println("  rapidlynk --help            Show this help message")
 }
-
