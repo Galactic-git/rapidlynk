@@ -19,7 +19,7 @@ func handlePull(secret string) {
 	archiveFile := "rapidlynk_download.tar.gz"
 
 	// 1. Request download URL from Cloud Run
-	fmt.Println("🔎 Resolving download URL from Cloud Run...")
+	fmt.Println("🔎Verifying the secret...")
 	downloadURL, err := requestDownloadURL(fileID)
 	if err != nil {
 		fmt.Printf("❌ Failed to get download URL: %v\n", err)
@@ -27,7 +27,7 @@ func handlePull(secret string) {
 	}
 
 	// 2. Download from Google Cloud Storage
-	fmt.Println("⬇️ Downloading from Google Cloud Storage...")
+	fmt.Println("⬇️ getting your project...")
 	if err := downloadFromSignedURL(downloadURL, encryptedFile); err != nil {
 		fmt.Printf("❌ Download failed: %v\n", err)
 		return

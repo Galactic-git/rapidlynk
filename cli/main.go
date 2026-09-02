@@ -5,16 +5,16 @@ import (
 	"os"
 )
 
-const version = "1.0.0"
+const version = "1.1.0"
 
-func main() {
-	if len(os.Args) < 2 {
+func main() { //  0        ,   1
+	if len(os.Args) < 2 { // rapidlynk push -> ["rapidlynk", "push"]
 		printUsage()
 		return
 	}
 
 	switch os.Args[1] {
-	case "-v", "--version", "version":
+	case "-v", "--version":
 		fmt.Printf("rapidlynk version %s\n", version)
 
 	case "push":
@@ -27,7 +27,7 @@ func main() {
 		}
 		handlePull(os.Args[2])
 
-	case "--help", "-h", "help":
+	case "--help", "-h":
 		printUsage()
 
 	default:

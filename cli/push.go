@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func handlePush() {
@@ -26,17 +27,33 @@ func handlePush() {
 	}
 	defer os.Remove(encryptedArchive)
 
-	// 3. Ask Cloud Run for upload URL
-	fmt.Println("☁️ Requesting upload URL from Cloud Run...")
-	resp, err := requestUploadURL()
+	// Get encrypted file information
+	fileInfo, err := os.Stat(encryptedArchive)
+	if err != nil {
+		fmt.Printf("❌ Failed to get encrypted file information: %v\n", err)
+		return
+	}
+
+	// 3. Ask AWS Lambda for an S3 upload URL
+	fmt.Println("☁️ We save nothing regarding your project data...")
+
+	resp, err := requestUploadURL(
+		filepath.Base(encryptedArchive),
+		fileInfo.Size(),
+	)
 	if err != nil {
 		fmt.Printf("❌ Failed to get upload URL: %v\n", err)
 		return
 	}
 
-	// 4. Automatically upload project.enc directly to Google Cloud Storage
-	fmt.Println("🚀 Uploading project.enc to Google Cloud Storage...")
-	if err := uploadToSignedURL(resp.UploadURL, encryptedArchive); err != nil {
+	// 4. Upload directly to Amazon S3 using the presigned POST
+	fmt.Println("Save the below secret to access your project ...")
+
+	if err := uploadToSignedURL(
+		resp.URL,
+		resp.Fields,
+		encryptedArchive,
+	); err != nil {
 		fmt.Printf("❌ Upload failed: %v\n", err)
 		return
 	}
