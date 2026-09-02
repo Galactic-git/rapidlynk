@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-const version = "1.1.0"
+const version = "1.0.0"
 
 func main() { //  0        ,   1
 	if len(os.Args) < 2 { // rapidlynk push -> ["rapidlynk", "push"]

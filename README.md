@@ -94,3 +94,19 @@ $env:RAPIDLYNK_SERVER="https://rapidlynk-server-xxxxxx.a.run.app"
 # Linux / macOS
 export RAPIDLYNK_SERVER="https://rapidlynk-server-xxxxxx.a.run.app"
 ```
+
+---
+
+## NPM Distribution
+
+Install globally using npm:
+```bash
+npm install -g rapidlynk
+```
+Or run directly via `npx`:
+```bash
+npx rapidlynk --help
+```
+
+For developer build & release instructions across Windows, Linux, and macOS, see [PUBLISHING.md](PUBLISHING.md).
+

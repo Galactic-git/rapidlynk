@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 const { spawnSync } = require('node:child_process');
 const { platform, arch } = require('node:process');
 const path = require('node:path');
