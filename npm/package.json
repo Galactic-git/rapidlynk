@@ -1,6 +1,6 @@
 {
   "name": "rapidlynk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rapidlynk CLI (bundled binaries)",
   "license": "MIT",
   "bin": {
