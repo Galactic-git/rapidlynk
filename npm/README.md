@@ -1,78 +1,59 @@
-# Rapidlynk
+# RapidLynk
 
-Rapidlynk is a Go-based project bundling and sharing tool. It consists of a Command Line Interface (CLI) and a backend server, allowing users to easily bundle their project files, upload them to a server, and share them via a unique ID. Other users can then use the CLI to pull and extract the project bundle using that ID.
+RapidLynk is a high-performance, zero-knowledge CLI for bundling, encrypting, and sharing project directories securely
 
-## Architecture
+## Installation
 
-The project is split into two main components:
-
-- **Server**: A Go HTTP server that handles file uploads and downloads.
-- **CLI**: A command-line tool to push (upload) and pull (download) project bundles.
-
-### Directory Structure
-
-```text
-rapidlynk/
-├── cli/              # Command Line Interface source code
-│   ├── archive.go    # Logic for archiving (tar.gz) project files
-│   ├── http.go       # HTTP client logic to interact with the server
-│   ├── main.go       # CLI entrypoint and command routing
-│   ├── pull.go       # Implementation of the 'pull' command
-│   └── push.go       # Implementation of the 'push' command
-├── server/           # Backend server source code
-│   ├── config/       # Server configuration
-│   ├── handlers/     # HTTP handlers (upload, download)
-│   ├── storage/      # File storage management
-│   ├── utils/        # Utility functions
-│   ├── main.go       # Server entrypoint (runs on port 8080)
-│   └── routes.go     # HTTP route definitions
-├── go.mod            # Go module definition (module named go_cli)
-└── README.md         # This documentation file
-```
-
-## Setup & Usage
-
-### Prerequisites
-- [Go](https://golang.org/doc/install) (version 1.22 or higher)
-
-### Running the Server
-
-To start the backend server, navigate to the `server` directory and run the main file:
+Install globally via npm:
 
 ```bash
-cd server
-go run main.go routes.go
+npm install -g rapidlynk
 ```
-The server will start running on `http://localhost:8080` with endpoints `/upload` and `/download/`.
 
-### Using the CLI
+Or execute directly without installing:
 
-You can run the CLI directly using `go run` or compile it into an executable.
+```bash
+npx rapidlynk --help
+```
 
-**Commands:**
+### Supported Platforms:
+- **Windows** (x64, ARM64)
+- **Linux** (x64, ARM64)
+- **macOS** (Intel x64, Apple Silicon ARM64)
 
-*   **Push**: Bundles the current project directory into a `tar.gz` archive, uploads it to the server, and provides a unique ID.
-    ```bash
-    go run ./cli push
-    ```
+---
 
-*   **Pull**: Downloads the project bundle associated with a specific ID and extracts it into the current directory.
-    ```bash
-    go run ./cli pull <id>
-    ```
+## Usage
 
-## Development
+### 1. Push (Bundle & Share)
+From any project directory:
 
-- The module name in `go.mod` is currently `go_cli`.
-- The CLI uses standard `tar` commands for extraction, so a Unix-like environment or an environment with `tar` installed is required for the `pull` command to function correctly.
+```bash
+rapidlynk push
+```
 
-## Channel-based usage (new)
+This will:
+1. Archive your project (`.tar.gz`).
+2. Encrypt it locally using AES-256-GCM.
+3. Request a presigned URL from AWS Lambda.
+4. Upload directly to Amazon S3.
+5. Display a secret key (`<file_id>:<key>`).
 
-- Push to a named channel:
-  ```bash
-  go run ./cli push -c <channel>
-  ```
-- Pull by channel (no key typed; provision key once via env or ~/.rapidlynk/keys.json):
-  ```bash
-  go run ./cli pull -c <channel>
-  ```
+### 2. Pull (Download & Decrypt)
+On another machine:
+
+```bash
+rapidlynk pull <file_id>:<key>
+```
+
+This will download the encrypted bundle directly from Amazon S3 via a short-lived presigned GET URL, decrypt it locally with the key, and extract the project files into your current directory.
+
+---
+
+## Security Model
+- Zero-knowledge encryption on the client machine using AES-256-GCM.
+- Encryption key is never sent to the backend server.
+- Files stored on Amazon S3 in encrypted format.
+
+## License
+MIT
