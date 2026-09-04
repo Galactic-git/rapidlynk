@@ -6,13 +6,15 @@ type PageHeroProps = {
 
 export function PageHero({ eyebrow, title, description }: PageHeroProps) {
   return (
-    <section className="pb-10 pt-16 sm:pb-14 sm:pt-20">
-      <div className="container-shell">
-        <div className="space-y-5">
-          <span className="pill-label">{eyebrow}</span>
-          <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">{title}</h1>
-          <p className="max-w-3xl text-lg leading-8 text-slate-300">{description}</p>
-        </div>
+    <section className="border-b border-zinc-800/80 pb-10 pt-12 sm:pb-14 sm:pt-16 bg-gradient-to-b from-zinc-950 to-black">
+      <div className="container-shell space-y-4">
+        <span className="badge-pink">{eyebrow}</span>
+        <h1 className="max-w-4xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          {title}
+        </h1>
+        <p className="max-w-2xl font-mono text-xs leading-relaxed text-zinc-400 sm:text-sm">
+          {description}
+        </p>
       </div>
     </section>
   );

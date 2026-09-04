@@ -10,26 +10,26 @@ type TerminalDemoProps = {
 };
 
 const toneClasses: Record<NonNullable<TerminalLine['tone']>, string> = {
-  default: 'text-slate-200',
-  muted: 'text-slate-500',
-  success: 'text-emerald-300',
-  accent: 'text-purple-200'
+  default: 'text-zinc-200',
+  muted: 'text-zinc-500',
+  success: 'text-emerald-400',
+  accent: 'text-pink-400',
 };
 
 export function TerminalDemo({ label, command, lines }: TerminalDemoProps) {
   return (
-    <div className="overflow-hidden rounded-[28px] border border-purple-500/20 bg-[#070910] shadow-glow">
-      <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-        <div className="flex items-center gap-2">
-          <span className="h-3 w-3 rounded-full bg-rose-400" />
-          <span className="h-3 w-3 rounded-full bg-amber-300" />
-          <span className="h-3 w-3 rounded-full bg-emerald-400" />
+    <div className="overflow-hidden rounded-xl border border-zinc-800 bg-[#07070a] shadow-card">
+      <div className="flex items-center justify-between border-b border-zinc-800/80 bg-zinc-950/60 px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-pink-500/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-purple-500/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
         </div>
-        <span className="text-sm font-medium text-slate-300">{label}</span>
+        <span className="font-mono text-xs text-zinc-400">{label}</span>
       </div>
-      <div className="space-y-3 px-5 py-6 font-mono text-sm leading-7 sm:text-base">
-        <div className="flex gap-3 text-purple-200">
-          <span className="select-none text-slate-500">$</span>
+      <div className="space-y-2.5 p-4 font-mono text-xs sm:text-sm">
+        <div className="flex items-center gap-2 text-pink-300">
+          <span className="select-none text-zinc-600">$</span>
           <span>{command}</span>
         </div>
         <div className="space-y-1">

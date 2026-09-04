@@ -4,28 +4,41 @@ import { Link } from 'react-router-dom';
 type ButtonLinkProps = {
   children: ReactNode;
   to: string;
-  variant?: 'primary' | 'secondary' | 'light';
-  size?: 'sm' | 'md';
+  variant?: 'primary' | 'secondary' | 'stark' | 'pink' | 'purple';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
 };
 
 const variants = {
   primary:
-    'border border-purple-400/20 bg-purple-900 text-white hover:bg-purple-800 hover:border-purple-400/30',
+    'bg-gradient-to-r from-pink-500 to-purple-600 text-white font-medium shadow-glowPink hover:opacity-95 border border-pink-400/30',
+  stark:
+    'bg-white text-black font-semibold hover:bg-zinc-200 border border-white',
   secondary:
-    'border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/15',
-  light: 'border border-white/10 bg-white text-slate-950 hover:bg-slate-200'
+    'border border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:text-white hover:border-zinc-700 hover:bg-zinc-800/80',
+  pink:
+    'bg-pink-500 text-black font-semibold hover:bg-pink-400 shadow-glowPink',
+  purple:
+    'bg-purple-600 text-white font-semibold hover:bg-purple-500 shadow-glowPurple border border-purple-400/30',
 };
 
 const sizes = {
-  sm: 'px-5 py-2.5 text-sm',
-  md: 'px-6 py-3.5 text-base'
+  sm: 'px-3.5 py-1.5 text-xs',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-6 py-3.5 text-base',
 };
 
-export function ButtonLink({ children, to, variant = 'primary', size = 'md' }: ButtonLinkProps) {
+export function ButtonLink({
+  children,
+  to,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+}: ButtonLinkProps) {
   return (
     <Link
       to={to}
-      className={`inline-flex items-center justify-center rounded-full font-semibold transition ${variants[variant]} ${sizes[size]}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg transition-all duration-150 ${variants[variant]} ${sizes[size]} ${className}`}
     >
       {children}
     </Link>
