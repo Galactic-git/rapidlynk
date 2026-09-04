@@ -114,9 +114,7 @@ export function DownloadPage() {
                     </div>
                   </div>
                   <a
-                    href="https://github.com/Galactic-git/rapidlynk/releases/latest"
-                    target="_blank"
-                    rel="noreferrer"
+                    href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/rapidlynk-windows-amd64.exe"
                     className="rounded border border-zinc-700 bg-zinc-800 px-3 py-1 text-[11px] text-white hover:bg-zinc-700"
                   >
                     Download ↗
@@ -129,13 +127,11 @@ export function DownloadPage() {
                     <span className="text-purple-400">🍎</span>
                     <div>
                       <p className="font-semibold text-white">macOS (Apple Silicon M1/M2/M3/M4)</p>
-                      <p className="text-[11px] text-zinc-500">rapidlynk-darwin-arm64</p>
+                      <p className="text-[11px] text-zinc-500">rapidlynk-darwin-arm64 · 8.1 MB</p>
                     </div>
                   </div>
                   <a
-                    href="https://github.com/Galactic-git/rapidlynk/releases/latest"
-                    target="_blank"
-                    rel="noreferrer"
+                    href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/rapidlynk-darwin-arm64"
                     className="rounded border border-zinc-700 bg-zinc-800 px-3 py-1 text-[11px] text-white hover:bg-zinc-700"
                   >
                     Download ↗
@@ -148,13 +144,11 @@ export function DownloadPage() {
                     <span className="text-purple-400">🍎</span>
                     <div>
                       <p className="font-semibold text-white">macOS (Intel x64)</p>
-                      <p className="text-[11px] text-zinc-500">rapidlynk-darwin-amd64</p>
+                      <p className="text-[11px] text-zinc-500">rapidlynk-darwin-amd64 · 8.6 MB</p>
                     </div>
                   </div>
                   <a
-                    href="https://github.com/Galactic-git/rapidlynk/releases/latest"
-                    target="_blank"
-                    rel="noreferrer"
+                    href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/rapidlynk-darwin-amd64"
                     className="rounded border border-zinc-700 bg-zinc-800 px-3 py-1 text-[11px] text-white hover:bg-zinc-700"
                   >
                     Download ↗
@@ -167,18 +161,40 @@ export function DownloadPage() {
                     <span className="text-pink-400">🐧</span>
                     <div>
                       <p className="font-semibold text-white">Linux (x64 / AMD64)</p>
-                      <p className="text-[11px] text-zinc-500">rapidlynk-linux-amd64</p>
+                      <p className="text-[11px] text-zinc-500">rapidlynk-linux-amd64 · 8.4 MB</p>
                     </div>
                   </div>
                   <a
-                    href="https://github.com/Galactic-git/rapidlynk/releases/latest"
-                    target="_blank"
-                    rel="noreferrer"
+                    href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/rapidlynk-linux-amd64"
                     className="rounded border border-zinc-700 bg-zinc-800 px-3 py-1 text-[11px] text-white hover:bg-zinc-700"
                   >
                     Download ↗
                   </a>
                 </div>
+
+                {/* Linux ARM64 */}
+                <div className="flex items-center justify-between border border-zinc-800 bg-zinc-950/60 p-3.5 rounded hover:border-pink-500/40 transition">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-pink-400">🐧</span>
+                    <div>
+                      <p className="font-semibold text-white">Linux (ARM64)</p>
+                      <p className="text-[11px] text-zinc-500">rapidlynk-linux-arm64 · 7.8 MB</p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/rapidlynk-linux-arm64"
+                    className="rounded border border-zinc-700 bg-zinc-800 px-3 py-1 text-[11px] text-white hover:bg-zinc-700"
+                  >
+                    Download ↗
+                  </a>
+                </div>
+              </div>
+
+              <div className="rounded border border-zinc-800 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-400">
+                <span className="text-pink-400 font-semibold">Tip for macOS & Linux:</span> After downloading, make executable and move to PATH:
+                <pre className="mt-1.5 overflow-x-auto rounded bg-zinc-950 p-2 text-zinc-300">
+                  chmod +x rapidlynk-darwin-arm64 && sudo mv rapidlynk-darwin-arm64 /usr/local/bin/rapidlynk
+                </pre>
               </div>
             </div>
 
