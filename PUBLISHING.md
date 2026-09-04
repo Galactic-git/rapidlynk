@@ -135,3 +135,10 @@ npm install -g rapidlynk
 # Or run directly via npx without manual installation
 npx rapidlynk --help
 ```
+
+---
+
+## 5. Website Installer Downloads
+
+For details on how the website download button connects to GitHub Releases and how to update future installer binaries, see [WEB_RELEASES.md](WEB_RELEASES.md).
+
