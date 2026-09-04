@@ -1,4 +1,4 @@
-﻿import { PageHero } from '../components/PageHero';
+import { PageHero } from '../components/PageHero';
 
 export function DownloadPage() {
   return (
@@ -19,7 +19,7 @@ export function DownloadPage() {
             </p>
             <div className="mt-8">
               <a
-                href="/downloads/RapidLynk-Setup-latest-x64.exe"
+                href="https://github.com/Galactic-git/rapidlynk/releases/latest/download/RapidLynk-Setup-latest-x64.exe"
                 className="inline-flex items-center justify-center rounded-full border border-purple-400/20 bg-purple-900 px-6 py-3.5 text-base font-semibold text-white transition hover:bg-purple-800"
               >
                 Download RapidLynk for Windows (x64)
