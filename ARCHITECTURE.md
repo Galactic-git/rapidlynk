@@ -2,6 +2,8 @@
 
 ## Overview
 
+> Historical document: the Google Cloud/Go backend described below has been replaced by the TypeScript AWS backend. Use [DEPLOYMENT.md](DEPLOYMENT.md) for current infrastructure and [PROJECT_GUIDE.md](PROJECT_GUIDE.md) for the current source map. The root Dockerfile also targets the historical Go server.
+
 Rapidlynk is a high-performance, secure CLI and server platform for instant, encrypted project bundling and sharing powered by **Google Cloud Run** and **Google Cloud Storage (GCS)**.
 
 - **Client-Side Encryption**: Projects are bundled (`tar.gz`) and encrypted with **AES-256-GCM** on the user's machine before transmission. The server and storage never have access to the raw project or encryption key.

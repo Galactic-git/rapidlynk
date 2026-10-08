@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Rapidlynk API and storage for a new environment
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedPattern: '^[a-z][a-z0-9-]{0,19}$'
+  LogRetentionDays:
+    Type: Number
+    Default: 14
+    AllowedValues: [7, 14, 30, 60, 90, 180, 365]
+
+Resources:
+  BundlesBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  MetricsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: month
+          AttributeType: S
+      KeySchema:
+        - AttributeName: month
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: '$default'
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+
+  Backend:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../server/dist/lambda/
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures: [x86_64]
+      MemorySize: 256
+      Timeout: 30
+      Environment:
+        Variables:
+          S3_BUCKET: !Ref BundlesBucket
+          DYNAMODB_TABLE: !Ref MetricsTable
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: [s3:GetObject, s3:PutObject]
+              Resource: !Sub '${BundlesBucket.Arn}/bundles/*'
+            - Effect: Allow
+              Action: [s3:ListBucket]
+              Resource: !GetAtt BundlesBucket.Arn
+            - Effect: Allow
+              Action: [dynamodb:UpdateItem, dynamodb:DescribeTable]
+              Resource: !GetAtt MetricsTable.Arn
+      Events:
+        Health:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /health
+            Method: GET
+            PayloadFormatVersion: '2.0'
+        UploadUrl:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/upload-url
+            Method: POST
+            PayloadFormatVersion: '2.0'
+        DownloadUrl:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/download-url/{id}
+            Method: GET
+            PayloadFormatVersion: '2.0'
+
+  BackendLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Backend}'
+      RetentionInDays: !Ref LogRetentionDays
+
+Outputs:
+  ApiUrl:
+    Description: Set RAPIDLYNK_SERVER to this origin
+    Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  FunctionName:
+    Value: !Ref Backend
+  BucketName:
+    Value: !Ref BundlesBucket
+  TableName:
+    Value: !Ref MetricsTable
