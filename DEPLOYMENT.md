@@ -4,7 +4,7 @@ Rapidlynk has three releases: the AWS backend, the Go CLI, and the static websit
 
 ## Existing production versus a new environment
 
-The source defaults to region `ap-south-1`, S3 bucket `rapidlynk-storage-prod`, DynamoDB table `rapidlynk-metrics`, and API origin `https://plit6sl6b8.execute-api.ap-south-1.amazonaws.com`. These are source defaults, not a verified inventory of the live account. The existing Lambda name, execution role, API stage/integrations, retention rules, and website provider settings must still be recorded by the operator.
+The production AWS configuration was inspected on 2026-10-08. See [PRODUCTION.md](PRODUCTION.md) for verified function names, handlers, API routing, S3 lifecycle/events, DynamoDB settings, and inspected execution policies. Production includes a separate S3-triggered upload-metrics Lambda absent from the checked-in source. Its code and the website hosting settings remain unverified.
 
 [`infrastructure/template.yaml`](infrastructure/template.yaml) creates a **new environment** with independently generated resource names. It does not import or adopt the manually configured production resources. Existing secrets refer to objects in the old bucket; changing API endpoints does not move those objects.
 

@@ -1,6 +1,6 @@
 # Rapidlynk project, deployment, and update guide
 
-Analysis date: 2026-10-08. Checkout: `59ae3eff7c10a3e6f04acccc8a3365058d20783e` plus the existing local README edit. This guide describes the checked-out source. Live AWS, npm, GitHub release assets, and hosting settings have not been inspected.
+Initial source analysis date: 2026-10-08. Checkout: `59ae3eff7c10a3e6f04acccc8a3365058d20783e` plus the existing local README edit. This guide describes the source. A subsequent read-only AWS inspection is recorded in [PRODUCTION.md](PRODUCTION.md): production has two-day S3 expiration and a separate S3-triggered upload-metrics Lambda. npm, GitHub release assets, and website hosting settings have not been inspected.
 
 ## What the project does
 
