@@ -283,6 +283,8 @@ For developer build and release instructions, see [PUBLISHING.md](PUBLISHING.md)
 
 ## Development
 
+For AWS setup, deployment, configuration inventory, updates, and rollback, see [DEPLOYMENT.md](DEPLOYMENT.md). The [SAM template](infrastructure/template.yaml) creates a separate backend environment. For a source map and implementation details, see [PROJECT_GUIDE.md](PROJECT_GUIDE.md).
+
 Clone the repository:
 ```bash
 git clone https://github.com/Galactic-git/rapidlynk.git

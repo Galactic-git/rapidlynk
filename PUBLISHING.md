@@ -1,5 +1,7 @@
 # RapidLynk Multi-Platform Build & NPM Publishing Guide
 
+For backend and website deployment, environment configuration, and rollback, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 This guide details how to version, cross-compile, verify, and publish the RapidLynk CLI binaries across all supported operating systems (Windows, Linux, macOS).
 
 ---
@@ -141,4 +143,3 @@ npx rapidlynk --help
 ## 5. Website Installer Downloads
 
 For details on how the website download button connects to GitHub Releases and how to update future installer binaries, see [WEB_RELEASES.md](WEB_RELEASES.md).
-

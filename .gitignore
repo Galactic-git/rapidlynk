@@ -56,6 +56,8 @@ yarn-error.log*
 # Misc
 # =========================
 .env
+.aws-sam/
+samconfig.toml
 
 # Allow Rapidlynk NPM binaries
 !rapidlynk-npm/bin/

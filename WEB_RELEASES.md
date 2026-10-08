@@ -88,16 +88,18 @@ You have two easy ways to upload the new installer to GitHub:
 Create the new release and attach the installer under the standardized name `RapidLynk-Setup-latest-x64.exe`:
 
 ```powershell
-gh release create v1.0.2 "installer\Output\Rapidlynk-Setup-1.0.2-x64.exe#RapidLynk-Setup-latest-x64.exe" --title "RapidLynk v1.0.2" --generate-notes
+Copy-Item -LiteralPath "installer\Output\Rapidlynk-Setup-1.0.2-x64.exe" -Destination "dist\RapidLynk-Setup-latest-x64.exe"
+gh release create v1.0.2 "dist\RapidLynk-Setup-latest-x64.exe" --title "RapidLynk v1.0.2" --generate-notes
 ```
 
-*(Note: The `#RapidLynk-Setup-latest-x64.exe` at the end ensures the uploaded asset name matches the link on the website).*
+The file must actually be named `RapidLynk-Setup-latest-x64.exe`. The GitHub CLI's `#suffix` sets a display label; it does not rename the asset. Also attach all platform binaries linked by the Download page to the same latest release. See [DEPLOYMENT.md](DEPLOYMENT.md) for the complete asset list and release example.
 
 #### Option B: Updating an Existing Release
 
 If you just want to update the binary on an existing release tag (like `v1.0.1`):
 ```powershell
-gh release upload v1.0.1 "installer\Output\Rapidlynk-Setup-1.0.1-x64.exe#RapidLynk-Setup-latest-x64.exe" --clobber
+Copy-Item -LiteralPath "installer\Output\Rapidlynk-Setup-1.0.1-x64.exe" -Destination "dist\RapidLynk-Setup-latest-x64.exe"
+gh release upload v1.0.1 "dist\RapidLynk-Setup-latest-x64.exe" --clobber
 ```
 
 #### Option C: Using the GitHub Website (Browser)
